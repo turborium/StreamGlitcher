@@ -32,8 +32,6 @@ type
     procedure TimerClithTimer(Sender: TObject);
   private
     Origin: TBitmap;
-    JpegStream: TBytesStream;
-
     procedure TryGlitch;
 
     procedure LoadJpegStreamFromBitmap(const JpegStream: TStream;
@@ -62,7 +60,6 @@ procedure TFormMain.FormCreate(Sender: TObject);
 begin
   Randomize;
 
-  JpegStream := TBytesStream.Create;
   Origin := TBitmap.Create;
   Origin.Assign(Image.Picture.Bitmap);
 
@@ -115,7 +112,6 @@ end;
 
 procedure TFormMain.FormDestroy(Sender: TObject);
 begin
-  JpegStream.Free;
   Origin.Free;
 end;
 
@@ -127,25 +123,31 @@ end;
 procedure TFormMain.TryGlitch;
 var
   I: Integer;
+  JpegStream: TBytesStream;
 begin
-  while True do
-  begin
-    LoadJpegStreamFromBitmap(JpegStream, Origin, Random(100) + 1);
-
-    if Random(2) = 0 then
-      JpegStream.Bytes[Min(Random(1000) + 10, JpegStream.Size - 1)] := Random(256);
-
-    for I := 0 to Random(20) + 1 do
+  JpegStream := TBytesStream.Create;
+  try
+    while True do
     begin
-      JpegStream.Bytes[Random(JpegStream.Size)] := Random(256);
-    end;
+      LoadJpegStreamFromBitmap(JpegStream, Origin, Random(100) + 1);
 
-    try
-      LoadBitmapFromJpegStream(Image.Picture.Bitmap, JpegStream);
-      Break;
-    except
-      Image.Picture.Assign(Origin);
+      if Random(2) = 0 then
+        JpegStream.Bytes[Min(Random(1000) + 10, JpegStream.Size - 1)] := Random(256);
+
+      for I := 0 to Random(20) + 1 do
+      begin
+        JpegStream.Bytes[Random(JpegStream.Size)] := Random(256);
+      end;
+
+      try
+        LoadBitmapFromJpegStream(Image.Picture.Bitmap, JpegStream);
+        Break;
+      except
+        Image.Picture.Assign(Origin);
+      end;
     end;
+  finally
+    JpegStream.Free;
   end;
 end;
 
