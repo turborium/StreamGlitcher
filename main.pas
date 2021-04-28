@@ -124,12 +124,18 @@ procedure TFormMain.TryGlitch;
 var
   I: Integer;
   JpegStream: TBytesStream;
+  Quality: Integer;
 begin
   JpegStream := TBytesStream.Create;
   try
     while True do
     begin
-      LoadJpegStreamFromBitmap(JpegStream, Origin, Random(100) + 1);
+      if Random(3) = 0 then
+        Quality := Random(10) + 1
+      else
+        Quality := Random(100) + 1;
+
+      LoadJpegStreamFromBitmap(JpegStream, Origin, Quality);
 
       if Random(2) = 0 then
         JpegStream.Bytes[Min(Random(1000) + 10, JpegStream.Size - 1)] := Random(256);
