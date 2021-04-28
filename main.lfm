@@ -1,7 +1,7 @@
 object FormMain: TFormMain
-  Left = 108
+  Left = 72
   Height = 600
-  Top = 150
+  Top = 190
   Width = 800
   Caption = 'Glither by CrazzzyPeter'
   ClientHeight = 600
@@ -82,6 +82,7 @@ object FormMain: TFormMain
     Align = alClient
     BorderSpacing.Around = 8
     Center = True
+    OnMouseWheel = ImageMouseWheel
     Picture.Data = {
       0A544A706567496D61676561270D00FFD8FFE000104A46494600010101004800
       480000FFDB004300010101010101010101010101010101010101010101010101

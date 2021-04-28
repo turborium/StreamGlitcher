@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  ExtDlgs;
+  ExtDlgs, Types;
 
 type
 
@@ -29,6 +29,8 @@ type
     procedure CheckBoxAutoChangeChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure ImageMouseWheel(Sender: TObject; Shift: TShiftState;
+      WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     procedure TimerClithTimer(Sender: TObject);
   private
     Origin: TBitmap;
@@ -113,6 +115,12 @@ end;
 procedure TFormMain.FormDestroy(Sender: TObject);
 begin
   Origin.Free;
+end;
+
+procedure TFormMain.ImageMouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  TryGlitch;
 end;
 
 procedure TFormMain.TimerClithTimer(Sender: TObject);
